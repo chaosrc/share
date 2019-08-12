@@ -86,9 +86,10 @@ libuv 是一个专注与异步 I/O 的跨平台库，由 Ryan Dahl 为 Node.js �
 - 事件驱动
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
-异步读取文件
+:::{.content-left.animated.fadeInLeft.toBuild}
+#### 同步读取文件 {.content-center}
 <br/>
-:::{.content-center}
+<!-- :::{.content-center} -->
 ```js
 const fs = require('fs')
 
@@ -96,6 +97,20 @@ fs.readFile('./package.json', (err, data) => {
     console.log(data.toString())
 })
 ```
+:::
+
+:::{.content-left.animated.fadeInRight.toBuild}
+#### 异步读取文件 {.content-center}
+<br/>
+<!-- :::{.content-center} -->
+```js
+const fs = require('fs')
+
+fs.readFile('./package.json', (err, data) => {
+    console.log(data.toString())
+})
+```
+:::
 
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
