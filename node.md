@@ -16,13 +16,13 @@ By chao {.text-intro}
 <!-- ## 创建 -->
 
 
-!![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ryan_Dahl.jpg/440px-Ryan_Dahl.jpg .img.alignleft.size-30)
+!![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ryan_Dahl.jpg/440px-Ryan_Dahl.jpg .img.alignleft.size-30.animated.fadeInUp.tobuild)
 <br/>
-:::{.content-left}
-Ryan Dahl 2009 年创建
-
+:::{.content-left.animated.fadeInUp.tobuild}
+Ryan Dahl 2009 年创建 Node.js
+:::{.animated.fadeInUp.tobuild}
 2012 年 Ryan Dahl 离开 Node.js 社区
-
+:::{.animated.fadeInUp.tobuild}
 2018年创建 [Deno](https://github.com/denoland/deno)
 :::
 
@@ -40,7 +40,7 @@ Ryan Dahl 2009 年创建
 ## V8 引擎 {.animated.fadeInUp}
 <br/>
 :::{.animated.fadeInUp.content-center.tobuild}
-由 Google 为 Chrome 开发的Javascript 引擎,核心工程师 Lars Bak 之前在 Sun公司研究Java 虚拟机，产出了 HotSpot 
+由 Google 为 Chrome 开发的 Javascript 引擎, 核心工程师 Lars Bak 之前在 Sun 公司研究 Java 虚拟机，产出了 HotSpot 
 :::
 
 
@@ -86,7 +86,8 @@ libuv 是一个专注与异步 I/O 的跨平台库，由 Ryan Dahl 为 Node.js �
 - 事件驱动
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
-比如异步读取文件
+异步读取文件
+<br/>
 :::{.content-center}
 ```js
 const fs = require('fs')
@@ -95,3 +96,97 @@ fs.readFile('./package.json', (err, data) => {
     console.log(data.toString())
 })
 ```
+
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+### 回调地狱问题
+<br/>
+:::{.content-center}
+```js
+step1(function (value1) {
+    step2(value1, function(value2) {
+        step3(value2, function(value3) {
+            step4(value3, function(value4) {
+                // Do something with value4
+            });
+        });
+    });
+});
+```
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+### 使用 async/await
+<br/>
+:::{.content-center}
+```js
+async function start() {
+    const value1 = await step1()
+    const value2 = await step2(value1)
+    const value3 = await step3(value2)
+    const value4 = await step3(value3)
+}
+```
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+### 使用事件监听
+<br/>
+:::{.content-center}
+```js
+// 文件index.js
+// 引入net模块
+const net = require("net")
+
+const server = net.createServer(socket => {
+  //监听data事件
+  socket.on("data", handleDataReceive)
+
+  //处理data事件的方法
+  function handleDataReceive(data) {
+    socket.write(`server: ${data.toString()}`)
+  }
+})
+
+server.listen(8801)
+```
+
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+### Node.js 应用场景
+
+!![](https://raw.githubusercontent.com/i5ting/How-to-learn-node-correctly/master/media/14912707129964/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-17%2007.25.05.png .content-left.size-50.animated.swing.tobuild)
+
+<br/>
+<br/>
+<br/>
+
+:::{.content-left.animated.swing}
+- 跨平台桌面应用：使用electron/nw.js等框架, Node.js与操作系统互交提供统一的api，浏览器作为UI展示
+- 前端工程化：React\Vue\Angular等主流框架使用的webpack/gulp等打包编译
+- 打包工具，使用Node.js构建
+Web应用开发：io密集型web应用，为前端提供Api接口
+{.build}
+
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+### 创建 Node.js Web 服务
+<br/>
+:::{.content-center}
+```js
+const http = require('http')
+
+const server = http.createServer((request, response) => {
+    response.end('hello node')
+})
+
+server.listen(8080)
+```
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
+## 谢谢！{.text-landing.text-shadow}
+
