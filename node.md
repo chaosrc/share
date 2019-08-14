@@ -1,7 +1,5 @@
 title: Nodejs 分享
 speaker: chao
-plugins:
-    - echarts
 
 <slide class="bg-black-blue aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
 
