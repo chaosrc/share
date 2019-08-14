@@ -57,7 +57,7 @@ Ryan Dahl 2009 年创建 Node.js
 
 <br/>
 :::{.content-center.animated.fadeInUp.tobuild}
-- JIT（Just-In-Time）编译，也就是即时编译，通过监听高频运行的代码，保存编译其结果进行优化，大大提供 Javascript 的运行速度 （后来的 Javascript 都支持了 JIT） 
+- JIT（Just-In-Time）编译，也就是即时编译，通过监听高频运行的代码，保存编译其结果进行优化，大大提高了 Javascript 的运行速度 （后来的 Javascript 都支持了 JIT） 
 - 垃圾回收，V8的垃圾回收借鉴了 Java VM 的精确垃圾回收管理，垃圾回收的效率远远高于其他引擎
 - 其他优化，内联缓存提高属性访问、隐藏类对动态添加类属性的优化
 - 遵循 ECMAScript，紧根 ECMAScript 最新标准，支持最新的语法
@@ -83,7 +83,7 @@ libuv 是一个专注与异步 I/O 的跨平台库，由 Ryan Dahl 为 Node.js �
 <br/>
 
 - 非阻塞异步 I/O 模型
-- 事件驱动
+- 事件循环(Event Loop)
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
 :::{.content-left.animated.fadeInLeft.toBuild}
@@ -93,9 +93,14 @@ libuv 是一个专注与异步 I/O 的跨平台库，由 Ryan Dahl 为 Node.js �
 ```js
 const fs = require('fs')
 
-fs.readFile('./package.json', (err, data) => {
+// 读取文件的状态
+let stats = fs.statSync('./a')
+
+ //判断是否为文件
+if (stats.isDirectory) {
+    let data = fs.readFileSync('./a/e.md')
     console.log(data.toString())
-})
+}
 ```
 :::
 
@@ -106,8 +111,16 @@ fs.readFile('./package.json', (err, data) => {
 ```js
 const fs = require('fs')
 
-fs.readFile('./package.json', (err, data) => {
-    console.log(data.toString())
+// 读取文件的状态
+fs.stat('./a', (err, stats) => {
+    if (err) return console.error(err)
+
+    //判断是否为文件
+    if (stats.isDirectory) {
+        fs.readFile('./a/e.md', (err, data) => {
+            console.log(data.toString())
+        })
+    }
 })
 ```
 :::
@@ -132,6 +145,25 @@ step1(function (value1) {
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
 
+### 使用 Promise
+
+<br/>
+:::{.content-center}
+```js
+step1()
+.then(value1 => {
+    return step2(value1)
+})
+.then(value2 => {
+    return step3(value2)
+})
+.then(value3 => {
+    return step4(value3)
+})
+```
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
 ### 使用 async/await
 <br/>
 :::{.content-center}
@@ -144,28 +176,38 @@ async function start() {
 }
 ```
 
+
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
 
-### 使用事件监听
+### Event Loop
 <br/>
+
+:::{.content-center}
+- 所有任务都在主线程，形成一个执行栈
+- 在主线程之外存在一个任务队列（Task Queue），系统将异步任务放到'任务队列'，然后主线程继续执行后续任务
+- 一旦‘执行栈’中所有任务执行完成，系统会读取'任务队列'执行。如果异步任务以及结束了等待状态，就会从’任务队列‘进入执行队列，恢复执行
+- 重复上面的第三步
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+### Event Loop
+<br/>
+<!-- :::{.content-center} -->
+!![](https://uploads.toptal.io/blog/image/129650/toptal-blog-image-1556581249859-3d5f53eabb995a2cc7ea8328a78ca29e.png)
+
+
+
+
+<slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
+
 :::{.content-center}
 ```js
-// 文件index.js
-// 引入net模块
-const net = require("net")
-
-const server = net.createServer(socket => {
-  //监听data事件
-  socket.on("data", handleDataReceive)
-
-  //处理data事件的方法
-  function handleDataReceive(data) {
-    socket.write(`server: ${data.toString()}`)
-  }
-})
-
-server.listen(8801)
+console.time('hello')
+setTimeout(() => {
+    console.timeEnd('hello')
+}, 1000)
 ```
+
+
 
 
 <slide class="bg-light aligncenter" image="https://source.unsplash.com/C1HhAQrbykQ/ .dark">
@@ -180,9 +222,8 @@ server.listen(8801)
 
 :::{.content-left.animated.swing}
 - 跨平台桌面应用：使用electron/nw.js等框架, Node.js与操作系统互交提供统一的api，浏览器作为UI展示
-- 前端工程化：React\Vue\Angular等主流框架使用的webpack/gulp等打包编译
-- 打包工具，使用Node.js构建
-Web应用开发：io密集型web应用，为前端提供Api接口
+- 前端工程化：React\Vue\Angular等主流框架使用的webpack/gulp等打包编译打包工具，使用Node.js构建
+- Web应用开发：io密集型web应用，为前端提供Api接口
 {.build}
 
 
